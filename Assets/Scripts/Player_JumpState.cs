@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class Player_IdleState : Player_GroundedState
+public class Player_JumpState : Player_AiredState
 {
-    public Player_IdleState(
+    public Player_JumpState(
         Player player,
         StateMachine stateMachine,
         string animBoolName)
@@ -12,15 +12,13 @@ public class Player_IdleState : Player_GroundedState
     {
         base.Enter();
 
-        player.SetVelocity(0, rb.linearVelocity.y);
+        player.SetVelocity(rb.linearVelocity.x, player.jumpForce);
     }
 
     public override void Update()
     {
         base.Update();
 
-        // Enter Move if any movement key (W/A/S/D) is pressed
-        if (player.moveInput != Vector2.zero) stateMachine.ChangeState(player.moveState);
+        if (rb.linearVelocity.y < 0) stateMachine.ChangeState(player.fallState);
     }
 }
-
