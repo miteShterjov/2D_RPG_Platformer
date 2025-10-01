@@ -10,6 +10,9 @@ public class Player : MonoBehaviour
     public Player_FallState fallState { get; private set; }
     public Player_WallSlideState wallSlideState { get; private set; }
     public Player_WallJumpState wallJumpState { get; private set; }
+    public Player_SprintState sprintState { get; private set; }
+    public Player_BasicAttackState basicAttackState { get; private set; }
+
     public Vector2 moveInput { get; private set; }
     public Animator animator { get; private set; }
     public Rigidbody2D rb { get; private set; }
@@ -17,11 +20,14 @@ public class Player : MonoBehaviour
     public bool groundDetected { get; private set; }
     public int facingDirection { get; private set; } = 1;
     public bool wallDetected { get; private set; }
-    
+
 
     [Header("Movement Settings")]
     public float moveSpeed = 5f;
+    public float dashSpeed = 20f;
     public float jumpForce = 8f;
+    [Space]
+    public float sprintDuration = 0.25f;
     [Range(0f, 1f)]
     public float inAirMoveMultiplier = 0.7f;
     [Range(0f, 1f)]
@@ -32,6 +38,9 @@ public class Player : MonoBehaviour
     [SerializeField] private float groundCheckDistance = 1.4f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float wallCheckDistance = 0.5f;
+    [Header("Attack Settings")]
+    public Vector2 attackVelocity;
+    public float attackVelocityDuration = 0.1f;
 
     private StateMachine stateMachine;
     private bool isFacingRight = true;
@@ -52,7 +61,8 @@ public class Player : MonoBehaviour
         fallState = new Player_FallState(this, stateMachine, "jumpFall");
         wallSlideState = new Player_WallSlideState(this, stateMachine, "wallSlide");
         wallJumpState = new Player_WallJumpState(this, stateMachine, "jumpFall");
-
+        sprintState = new Player_SprintState(this, stateMachine, "sprint");
+        basicAttackState = new Player_BasicAttackState(this, stateMachine, "basicAttack");
     }
 
     private void OnEnable()
@@ -77,6 +87,7 @@ public class Player : MonoBehaviour
     {
         HandleCollisionDetection();
         stateMachine.UpdateActiveState();
+        print("Current active state: " + stateMachine.currentState);
     }
 
     public void SetVelocity(float xVelocity, float yVelocity)
@@ -84,6 +95,8 @@ public class Player : MonoBehaviour
         rb.linearVelocity = new Vector2(xVelocity, yVelocity);
         HandleFlip();
     }
+
+    public void CallAnimTrigger() => stateMachine.currentState.CallAnimTrigger();
 
     private void HandleFlip()
     {
