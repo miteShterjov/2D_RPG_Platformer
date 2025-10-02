@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class Player_AiredState : EntityState
@@ -17,5 +18,7 @@ public class Player_AiredState : EntityState
                 player.moveInput.x * (player.moveSpeed * player.inAirMoveMultiplier),
                 rb.linearVelocity.y
                 );
+
+        if (player.playerInput.Player.Attack.WasPressedThisFrame()) stateMachine.ChangeState(player.jumpAttackState);
     }
 }

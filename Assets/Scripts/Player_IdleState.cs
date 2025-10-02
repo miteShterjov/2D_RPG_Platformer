@@ -19,6 +19,8 @@ public class Player_IdleState : Player_GroundedState
     {
         base.Update();
 
+        if (player.moveInput.x == player.facingDirection && player.wallDetected) return;
+
         // Enter Move if any movement key (W/A/S/D) is pressed
         if (player.moveInput != Vector2.zero) stateMachine.ChangeState(player.moveState);
     }

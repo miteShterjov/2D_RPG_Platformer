@@ -3,6 +3,7 @@ using UnityEngine;
 public class Player_SprintState : EntityState
 {
     private float originalGravityScale;
+    private int attackDirection;
     public Player_SprintState(
         Player player,
         StateMachine stateMachine,
@@ -13,6 +14,7 @@ public class Player_SprintState : EntityState
     {
         base.Enter();
 
+        attackDirection = player.moveInput.x != 0 ? (int)Mathf.Sign(player.moveInput.x) : player.facingDirection;
         stateTimer = player.sprintDuration;
         originalGravityScale = rb.gravityScale;
         rb.gravityScale = 0;
