@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Player_BasicAttackState : EntityState
+public class Player_BasicAttackState : PlayerState
 {
     private static readonly int basicAttackIndexHash = Animator.StringToHash("basicAttackIndex");
     private float attackVelocityTimer;
@@ -31,7 +31,7 @@ public class Player_BasicAttackState : EntityState
         ResetComboIndexWhenCapped();
 
         // Set attack direction based on movement input, if no input use facing direction
-        attackDirection = player.moveInput.x != 0 ? (int)Mathf.Sign(player.moveInput.x) : player.facingDirection;
+        attackDirection = player.moveInput.x != 0 ? (int)Mathf.Sign(player.moveInput.x) : player.FacingDirection;
 
         animator.SetInteger(basicAttackIndexHash, currentComboIndex);
         ApplyAttackVelocity();

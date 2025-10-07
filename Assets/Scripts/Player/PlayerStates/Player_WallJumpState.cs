@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Player_WallJumpState : EntityState
+public class Player_WallJumpState : PlayerState
 {
     private float regrabLockTIme = 0.15f;
     private float regrabLockTimer;
@@ -15,12 +15,12 @@ public class Player_WallJumpState : EntityState
     {
         base.Enter();
 
-        int pushDirection = -player.facingDirection;
+        int pushDirection = -player.FacingDirection;
 
         regrabLockTimer = regrabLockTIme;
 
         player.SetVelocity(player.wallJumpForce.x * pushDirection, player.wallJumpForce.y);
-        if (player.facingDirection != player.moveInput.x) player.Flip();
+        if (player.FacingDirection != player.moveInput.x) player.Flip();
 
     }
 
@@ -39,6 +39,6 @@ public class Player_WallJumpState : EntityState
             return;
         }
 
-        if (player.wallDetected) stateMachine.ChangeState(player.wallSlideState);
+        if (player.WallDetected) stateMachine.ChangeState(player.wallSlideState);
     }
 }

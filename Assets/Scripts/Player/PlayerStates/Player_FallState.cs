@@ -11,14 +11,14 @@ public class Player_FallState : Player_AiredState
     public override void Update()
     {
         base.Update();
-        if (player.groundDetected && player.moveInput.x != 0)
+        if (player.GroundDetected && player.moveInput.x != 0)
         {
             stateMachine.ChangeState(player.moveState);
             return;
         }
 
-        if (player.groundDetected) stateMachine.ChangeState(player.idleState);
+        if (player.GroundDetected) stateMachine.ChangeState(player.idleState);
 
-        if (player.wallDetected) stateMachine.ChangeState(player.wallSlideState);
+        if (player.WallDetected) stateMachine.ChangeState(player.wallSlideState);
     }
 }

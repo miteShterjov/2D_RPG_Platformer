@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Player_SprintState : EntityState
+public class Player_SprintState : PlayerState
 {
     private float originalGravityScale;
     private int attackDirection;
@@ -14,7 +14,7 @@ public class Player_SprintState : EntityState
     {
         base.Enter();
 
-        attackDirection = player.moveInput.x != 0 ? (int)Mathf.Sign(player.moveInput.x) : player.facingDirection;
+        attackDirection = player.moveInput.x != 0 ? (int)Mathf.Sign(player.moveInput.x) : player.FacingDirection;
         stateTimer = player.sprintDuration;
         originalGravityScale = rb.gravityScale;
         rb.gravityScale = 0;
@@ -26,10 +26,10 @@ public class Player_SprintState : EntityState
 
         CancelDashIfNeeded();
 
-        player.SetVelocity(player.dashSpeed * player.facingDirection, 0);
+        player.SetVelocity(player.dashSpeed * player.FacingDirection, 0);
 
         if (stateTimer <= 0)
-            if (player.groundDetected) stateMachine.ChangeState(player.idleState);
+            if (player.GroundDetected) stateMachine.ChangeState(player.idleState);
             else stateMachine.ChangeState(player.fallState);
 
 
@@ -44,8 +44,8 @@ public class Player_SprintState : EntityState
 
     private void CancelDashIfNeeded()
     {
-        if (player.wallDetected)
-            if (player.groundDetected) stateMachine.ChangeState(player.idleState);
+        if (player.WallDetected)
+            if (player.GroundDetected) stateMachine.ChangeState(player.idleState);
             else stateMachine.ChangeState(player.wallSlideState);
     }
 }

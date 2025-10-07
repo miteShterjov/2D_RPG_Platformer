@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Player_JumpAttackState : EntityState
+public class Player_JumpAttackState : PlayerState
 {
     private static readonly int jumpAttackTriggerHash = Animator.StringToHash("jumpAttackTrigger");
     private bool hasTouchedGround;
@@ -15,21 +15,21 @@ public class Player_JumpAttackState : EntityState
         base.Enter();
 
         hasTouchedGround = false;
-        player.SetVelocity(player.jumpAttackVelocity.x * player.facingDirection, player.jumpAttackVelocity.y);
+        player.SetVelocity(player.jumpAttackVelocity.x * player.FacingDirection, player.jumpAttackVelocity.y);
     }
 
     public override void Update()
     {
         base.Update();
 
-        if (player.groundDetected && !hasTouchedGround)
+        if (player.GroundDetected && !hasTouchedGround)
         {
             hasTouchedGround = true;
             animator.SetTrigger(jumpAttackTriggerHash);
             player.SetVelocity(0, rb.linearVelocity.y);
         }
 
-        if (triggerCalled && player.groundDetected) stateMachine.ChangeState(player.idleState);
+        if (triggerCalled && player.GroundDetected) stateMachine.ChangeState(player.idleState);
     }
 
     public override void Exit()

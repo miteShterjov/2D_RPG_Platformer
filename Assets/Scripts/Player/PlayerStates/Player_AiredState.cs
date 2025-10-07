@@ -1,7 +1,7 @@
 using System.Linq;
 using UnityEngine;
 
-public class Player_AiredState : EntityState
+public class Player_AiredState : PlayerState
 {
     public Player_AiredState(
         Player player,

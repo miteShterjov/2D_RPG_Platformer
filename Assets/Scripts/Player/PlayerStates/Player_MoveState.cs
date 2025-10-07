@@ -13,7 +13,7 @@ public class Player_MoveState : Player_GroundedState
         base.Update();
 
         // Return to Idle when no movement input is 0
-        if (player.moveInput == Vector2.zero || player.wallDetected) stateMachine.ChangeState(player.idleState);
+        if (player.moveInput == Vector2.zero || player.WallDetected) stateMachine.ChangeState(player.idleState);
 
         player.SetVelocity(player.moveInput.x * player.moveSpeed, rb.linearVelocity.y);
     }

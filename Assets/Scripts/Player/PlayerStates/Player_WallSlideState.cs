@@ -15,12 +15,12 @@ public class Player_WallSlideState : Player_AiredState
 
         if (playerInput.Player.Jump.WasPressedThisFrame()) stateMachine.ChangeState(player.wallJumpState);
 
-        if (!player.wallDetected && !player.groundDetected) stateMachine.ChangeState(player.fallState);
+        if (!player.WallDetected && !player.GroundDetected) stateMachine.ChangeState(player.fallState);
 
-        if (player.groundDetected)
+        if (player.GroundDetected)
         {
             stateMachine.ChangeState(player.idleState);
-            if (player.facingDirection != player.moveInput.x) player.Flip();
+            if (player.FacingDirection != player.moveInput.x) player.Flip();
         }
     }
 
