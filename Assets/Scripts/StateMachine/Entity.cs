@@ -11,7 +11,7 @@ public class Entity : MonoBehaviour
 
     [Header("Collision Detection")]
     [SerializeField] private float groundCheckDistance = 1.4f;
-    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] protected LayerMask groundLayer;
     [SerializeField] private float wallCheckDistance = 0.5f;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private Transform primaryWallCheck;
@@ -38,7 +38,7 @@ public class Entity : MonoBehaviour
     {
         HandleCollisionDetection();
         stateMachine.UpdateActiveState();
-        print("Current active state: " + stateMachine.currentState);
+        // print("Current active state: " + stateMachine.currentState);
     }
 
     public void SetVelocity(float xVelocity, float yVelocity)
@@ -56,7 +56,7 @@ public class Entity : MonoBehaviour
         FacingDirection *= -1;
     }
 
-    private void HandleFlip(float xVelocity)
+    public void HandleFlip(float xVelocity)
     {
         if (xVelocity > 0 && !isFacingRight) Flip();
         else if (xVelocity < 0 && isFacingRight) Flip();
@@ -64,16 +64,42 @@ public class Entity : MonoBehaviour
 
     private void HandleCollisionDetection()
     {
-        GroundDetected = Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckDistance, groundLayer);
-        WallDetected = Physics2D.Raycast(primaryWallCheck.position, Vector2.right * FacingDirection, wallCheckDistance, groundLayer)
-            && Physics2D.Raycast(secondaryWallCheck.position, Vector2.right * FacingDirection, wallCheckDistance, groundLayer);
-    }
+        GroundDetected = Physics2D.Raycast(
+            groundCheck.position,
+            Vector2.down,
+            groundCheckDistance,
+            groundLayer
+            );
 
-    private void OnDrawGizmos()
+        if (secondaryWallCheck != null)
+        {
+            WallDetected = Physics2D.Raycast(
+                primaryWallCheck.position,
+                Vector2.right * FacingDirection,
+                wallCheckDistance,
+                groundLayer)
+            && Physics2D.Raycast(
+                secondaryWallCheck.position,
+                Vector2.right * FacingDirection,
+                wallCheckDistance,
+                groundLayer);
+        }
+        else
+        {
+            WallDetected = Physics2D.Raycast(
+                primaryWallCheck.position,
+                Vector2.right * FacingDirection,
+                wallCheckDistance,
+                groundLayer);
+        }
+    }
+    
+    protected virtual void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawLine(groundCheck.position, groundCheck.position + new Vector3(0, -groundCheckDistance, 0));
         Gizmos.DrawLine(primaryWallCheck.position, primaryWallCheck.position + new Vector3(wallCheckDistance * FacingDirection, 0, 0));
-        Gizmos.DrawLine(secondaryWallCheck.position, secondaryWallCheck.position + new Vector3(wallCheckDistance * FacingDirection, 0, 0));
+        if (secondaryWallCheck != null)
+            Gizmos.DrawLine(secondaryWallCheck.position, secondaryWallCheck.position + new Vector3(wallCheckDistance * FacingDirection, 0, 0));
     }
 }
