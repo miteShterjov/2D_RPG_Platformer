@@ -1,10 +1,10 @@
+using System;
 using System.Collections;
-using TreeEditor;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class Player : Entity
 {
+    public static event Action OnPlayerDeath;
     public Player_IdleState idleState { get; private set; }
     public Player_MoveState moveState { get; private set; }
     public Player_JumpState jumpState { get; private set; }
@@ -14,6 +14,7 @@ public class Player : Entity
     public Player_SprintState sprintState { get; private set; }
     public Player_BasicAttackState basicAttackState { get; private set; }
     public Player_JumpAttackState jumpAttackState { get; private set; }
+    public Player_DeadState deadState { get; private set; }
 
     public InputSystem_Actions playerInput { get; private set; }
     public Vector2 moveInput { get; private set; }
@@ -51,6 +52,7 @@ public class Player : Entity
         wallJumpState = new Player_WallJumpState(this, stateMachine, "jumpFall");
         basicAttackState = new Player_BasicAttackState(this, stateMachine, "basicAttack");
         jumpAttackState = new Player_JumpAttackState(this, stateMachine, "jumpAttack");
+        deadState = new Player_DeadState(this, stateMachine, "dead");
 
         playerInput = new InputSystem_Actions();
     }
@@ -61,7 +63,7 @@ public class Player : Entity
         stateMachine.Initialize(idleState);
     }
 
-    private void OnEnable()
+    protected void OnEnable()
     {
         playerInput.Enable();
 
@@ -69,9 +71,16 @@ public class Player : Entity
         playerInput.Player.Move.canceled += ctx => moveInput = Vector2.zero;
     }
 
-    private void OnDisable()
+    protected void OnDisable()
     {
         playerInput.Disable();
+    }
+
+    public override void EntityDeath()
+    {
+        base.EntityDeath();
+        OnPlayerDeath?.Invoke();
+        stateMachine.ChangeState(deadState);
     }
 
     public void EnterAttackStateWithDelay()

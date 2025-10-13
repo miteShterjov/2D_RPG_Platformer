@@ -19,6 +19,8 @@ public class Entity : MonoBehaviour
 
     protected StateMachine stateMachine;
     private bool isFacingRight = true;
+    private bool isKnocked;
+    private Coroutine knockbackCoroutine;
 
     protected virtual void Awake()
     {
@@ -34,7 +36,7 @@ public class Entity : MonoBehaviour
 
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         HandleCollisionDetection();
         stateMachine.UpdateActiveState();
@@ -43,6 +45,7 @@ public class Entity : MonoBehaviour
 
     public void SetVelocity(float xVelocity, float yVelocity)
     {
+        if (isKnocked) return;
         rb.linearVelocity = new Vector2(xVelocity, yVelocity);
         HandleFlip(xVelocity);
     }
@@ -60,6 +63,29 @@ public class Entity : MonoBehaviour
     {
         if (xVelocity > 0 && !isFacingRight) Flip();
         else if (xVelocity < 0 && isFacingRight) Flip();
+    }
+
+    public void RecevieKnockback(float knockbackDuration, Vector2 knockbackForce)
+    {
+        if (knockbackCoroutine != null) StopCoroutine(knockbackCoroutine);
+        knockbackCoroutine = StartCoroutine(KnockbackCoroutine(knockbackDuration, knockbackForce));
+    }
+
+    public virtual void EntityDeath()
+    {
+        
+    }
+
+    private IEnumerator KnockbackCoroutine(float knockbackDuration, Vector2 knockbackForce)
+    {
+        isKnocked = true;
+        rb.linearVelocity = knockbackForce;
+
+        yield return new WaitForSeconds(knockbackDuration);
+
+        rb.linearVelocity = Vector2.zero;
+
+        isKnocked = false;
     }
 
     private void HandleCollisionDetection()

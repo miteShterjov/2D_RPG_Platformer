@@ -3,14 +3,21 @@ using UnityEngine;
 public class Entity_AnimTriggerEvents : MonoBehaviour
 {
     private Entity entity;
+    private Entity_Combat entityCombat;
 
-    void Awake()
+    protected virtual void Awake()
     {
         entity = GetComponentInParent<Entity>();
+        entityCombat = GetComponentInParent<Entity_Combat>();
     }
 
     public void CurrentStateTrigger()
     {
         entity.CallAnimTrigger();
+    }
+
+    public void AttackTrigger()
+    {
+        entityCombat.PreformAttack();
     }
 }

@@ -35,6 +35,6 @@ public class EnemyState : EntityState
         animator.SetFloat(MoveAnimSpeedMultiplier, enemy.moveAnimSpeedMultiplier);
         animator.SetFloat(hasAggroVelocity, Mathf.Abs(rb.linearVelocity.x));
 
-        Debug.Log("current state: " + this);
+        // Debug.Log("current state: " + this);
     }
 }
