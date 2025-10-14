@@ -9,6 +9,13 @@ public class Entity_Combat : MonoBehaviour
     [Header("Attack")]
     [SerializeField] private float damage = 10f;
 
+    private Entity_VFX entityVFX;
+
+    private void Awake()
+    {
+        entityVFX = GetComponent<Entity_VFX>();
+    }
+
     public void PreformAttack()
     {
         foreach (Collider2D collider in GetDetectedColliders())
@@ -17,15 +24,17 @@ public class Entity_Combat : MonoBehaviour
             if (damagable != null)
             {
                 damagable.TakeDamage(damage, transform);
+                entityVFX?.PlayOnHitVFX(collider.transform);
                 continue;
             }
 
             Entity_Health targetHealth = collider.GetComponent<Entity_Health>();
             targetHealth?.TakeDamage(damage, transform);
+            entityVFX?.PlayOnHitVFX(collider.transform);
         }
     }
 
-    private Collider2D[] GetDetectedColliders()
+    protected Collider2D[] GetDetectedColliders()
     {
         return Physics2D.OverlapCircleAll(targetCheck.position, targetCheckRadius, whatIsTarget);
     }

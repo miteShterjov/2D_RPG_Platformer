@@ -19,7 +19,9 @@ public class Player_GroundedState : PlayerState
         }
 
         if (playerInput.Player.Jump.WasPressedThisFrame()) stateMachine.ChangeState(player.jumpState);
-        
+
         if (playerInput.Player.Attack.WasPressedThisFrame()) stateMachine.ChangeState(player.basicAttackState);
+        
+        if (playerInput.Player.CounterAttack.WasPressedThisFrame()) stateMachine.ChangeState(player.counterAttackState);
     }
 }

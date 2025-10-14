@@ -336,7 +336,7 @@ Transform:
   - {fileID: 1240201020}
   - {fileID: 99875718}
   - {fileID: 1827522717}
-  - {fileID: 283276021}
+  - {fileID: 829576205}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &73744025
@@ -393,7 +393,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   targetCheckRadius: 1
-  damage: 25
+  damage: 1
 --- !u!114 &73744027
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -428,7 +428,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy_VFX
   onDamageMaterial: {fileID: 2100000, guid: 5f666f8b01a84204692343c0c146cdf5, type: 2}
   onDamageVFXDuration: 0.2
-  counterAttackAlert: {fileID: 283276020}
+  onHitVFX: {fileID: 6161897052894076231, guid: 82d2052e9abfd7f41aa7e8842d7f4017, type: 3}
+  onHitVFXColor: {r: 0.8704165, g: 0.84795123, b: 0.84795123, a: 1}
+  counterAttackAlert: {fileID: 829576204}
 --- !u!1 &99875717
 GameObject:
   m_ObjectHideFlags: 0
@@ -562,7 +564,7 @@ GameObject:
   - component: {fileID: 277885983}
   - component: {fileID: 277885982}
   - component: {fileID: 277885980}
-  - component: {fileID: 277885984}
+  - component: {fileID: 277885987}
   - component: {fileID: 277885985}
   - component: {fileID: 277885986}
   m_Layer: 8
@@ -689,24 +691,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &277885984
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 277885979}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 551ff47b4abcbc2479967476e89ba65a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Entity_Combat
-  targetCheck: {fileID: 1297715641}
-  whatIsTarget:
-    serializedVersion: 2
-    m_Bits: 512
-  targetCheckRadius: 1
-  damage: 25
 --- !u!114 &277885985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -741,6 +725,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Entity_VFX
   onDamageMaterial: {fileID: 2100000, guid: 5f666f8b01a84204692343c0c146cdf5, type: 2}
   onDamageVFXDuration: 0.2
+  onHitVFX: {fileID: 6161897052894076231, guid: 82d2052e9abfd7f41aa7e8842d7f4017, type: 3}
+  onHitVFXColor: {r: 1, g: 0.7921569, b: 0.03137255, a: 1}
+--- !u!114 &277885987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 277885979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cdb7e8a02da68540944e91b18c7c426, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
+  targetCheck: {fileID: 1297715641}
+  whatIsTarget:
+    serializedVersion: 2
+    m_Bits: 512
+  targetCheckRadius: 1
+  damage: 1
+  counterRecovery: 0.25
 --- !u!1 &283276020
 GameObject:
   m_ObjectHideFlags: 0
@@ -752,12 +757,12 @@ GameObject:
   - component: {fileID: 283276021}
   - component: {fileID: 283276022}
   m_Layer: 9
-  m_Name: AttackAlert
+  m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &283276021
 Transform:
   m_ObjectHideFlags: 0
@@ -766,13 +771,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 283276020}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.074, y: 0.679, z: 0}
-  m_LocalScale: {x: 0.15, y: 0.15, z: 0.5}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.07399967, y: 0.67899996, z: 0}
+  m_LocalScale: {x: 0.14999999, y: 0.14999999, z: 0.49999997}
   m_ConstrainProportionsScale: 1
-  m_Children:
-  - {fileID: 833909214}
-  m_Father: {fileID: 73744024}
+  m_Children: []
+  m_Father: {fileID: 829576205}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &283276022
 SpriteRenderer:
@@ -822,7 +826,7 @@ SpriteRenderer:
   m_SortingLayer: -2
   m_SortingOrder: -1
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 0.6}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1386,6 +1390,39 @@ MonoBehaviour:
   - background: {fileID: 1332537964}
     parallaxMultiplier: 0.85
     imageWidthOffset: 10
+--- !u!1 &829576204
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 829576205}
+  m_Layer: 9
+  m_Name: AttackAlert
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &829576205
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 829576204}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.015477, y: -0.000000042575, z: 0}
+  m_LocalScale: {x: 0.79623, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 283276021}
+  - {fileID: 833909214}
+  m_Father: {fileID: 73744024}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &833909213
 GameObject:
   m_ObjectHideFlags: 0
@@ -1412,11 +1449,11 @@ Transform:
   m_GameObject: {fileID: 833909213}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.026, y: 1.61, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 0.29999998}
+  m_LocalPosition: {x: 0.07789952, y: 0.92049986, z: 0}
+  m_LocalScale: {x: 0.14999998, y: 0.14999998, z: 0.14999996}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 283276021}
+  m_Father: {fileID: 829576205}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &833909215
 SpriteRenderer:
@@ -1462,11 +1499,11 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1304907451
+  m_SortingLayer: -2
+  m_SortingOrder: -1
   m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
-  m_Color: {r: 0.9960785, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.9960785, g: 0, b: 0, a: 0.6}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
