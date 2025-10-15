@@ -13,9 +13,13 @@ public class Entity_Health : MonoBehaviour
     [SerializeField] private Vector2 heavyKnockbackForce = new Vector2(7f, 7f);
     [Header("On Heavy Damage")]
     [SerializeField] private float heavyDamageThreshold = .3f;
+    [Header("HpBarUI")]
+    [SerializeField] private GameObject hpBarUIPrefab;
+
 
     private Entity_VFX entityVFX;
     private Entity entity;
+    private GameObject hpBarUIInstance;
 
     protected virtual void Awake()
     {
@@ -26,6 +30,16 @@ public class Entity_Health : MonoBehaviour
     protected virtual void Start()
     {
         currentHealth = maxHealth;
+        hpBarUIInstance = Instantiate(
+            hpBarUIPrefab,
+            transform.position + new Vector3(0, 1, 0),
+            Quaternion.identity, transform);
+
+    }
+
+    protected virtual void Update()
+    {
+        if (currentHealth != maxHealth) hpBarUIInstance?.GetComponent<HpBarUI>().EnableHpBar(true);
     }
 
     public virtual void TakeDamage(float damage, Transform damageSource)
@@ -42,6 +56,7 @@ public class Entity_Health : MonoBehaviour
     private void ReduceHP(float damage)
     {
         currentHealth -= damage;
+        hpBarUIInstance?.GetComponent<HpBarUI>().UpdateHpBar(currentHealth, maxHealth);
         if (currentHealth <= 0)
         {
             currentHealth = 0;
@@ -67,4 +82,5 @@ public class Entity_Health : MonoBehaviour
 
     private bool isCritDamage(float damage) => damage / maxHealth >= heavyDamageThreshold;
     private float CalcKnockbackDuration(float damage) => isCritDamage(damage) ? heavyKnockbackDuration : knockbackDuration;
+    
 }

@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
+    public event System.Action OnEntityFlip;
+
     public Animator animator { get; private set; }
     public Rigidbody2D rb { get; private set; }
     public bool GroundDetected { get; private set; }
@@ -57,6 +59,8 @@ public class Entity : MonoBehaviour
         transform.Rotate(0f, 180f, 0f);
         isFacingRight = !isFacingRight;
         FacingDirection *= -1;
+
+        OnEntityFlip?.Invoke();
     }
 
     public void HandleFlip(float xVelocity)
